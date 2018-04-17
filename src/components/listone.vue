@@ -6,7 +6,7 @@
                   <div class="title">
                       {{item.title}} {{item.des}}
                       <span v-if="item.good.length" v-for="(x,index) in item.good" :key="index" :class="itemGoods(x)">{{x}}</span>
-                      <div>{{tian}}天{{shi}}时{{fen}}分{{miao}}秒</div>
+                      <div ref="fbl">{{item.title}}</div>
                   </div>
               </div>
             </li>
@@ -19,10 +19,7 @@ export default {
   data () {
     return {
       dataList: [],
-      tian: '00',
-      shi: '00',
-      fen: '00',
-      miao: '00'
+      timeList: []
     }
   },
   created () {
@@ -84,6 +81,16 @@ export default {
       }
     ]
   },
+  mounted () {
+    this.$nextTick(function () {
+      // var fbl = this.$refs.fbl
+      // var fblChild = fbl.getElementsByClassName('fblchild')
+      for (var i = 0; i < this.dataList.length; i++) {
+        this.showTime(i, this.dataList[i].tnum)
+        this.setTimeShow()
+      }
+    })
+  },
   methods: {
     itemGoods (item) {
       if (item === '新春红包') {
@@ -94,6 +101,48 @@ export default {
         return 's3'
       } else if (item === '抽奖') {
         return 's4'
+      }
+    },
+    showTime: function (tuanid, timedistance) {
+      this.tuanid = tuanid
+      // console.log(this.tuanid)
+      // console.log(fbl[this.tuanid])
+      this.timedistance = timedistance * 1000
+    },
+    setTimeShow () {
+      var fbl = this.$refs.fbl
+      var timer = fbl[this.tuanid]
+      var strtime
+      var intday, inthour, intminute, intsecond
+      var timedistance = this.timedistance
+      this.timedistance = this.timedistance - 1000
+      if (timedistance > 0) {
+        intday = Math.floor(timedistance / 86400000)
+        timedistance -= intday * 86400000
+        inthour = Math.floor(timedistance / 3600000)
+        timedistance -= inthour * 3600000
+        intminute = Math.floor(timedistance / 60000)
+        timedistance -= intminute * 60000
+        intsecond = Math.floor(timedistance / 1000)
+        if (inthour < 10) {
+          inthour = '0' + inthour
+        }
+        if (intminute < 10) {
+          intminute = '0' + intminute
+        }
+        if (intsecond < 10) {
+          intsecond = '0' + intsecond
+        }
+        strtime = intday + '天' + inthour + '小时' + intminute + '分钟' + intsecond + '秒'
+        timer.innerHTML = strtime
+        // console.log(timer)
+        // console.log(strtime)
+        var self = this
+        setTimeout(function () {
+          self.setTimeShow()
+        }, 1000)
+      } else {
+        return false
       }
     }
   }
