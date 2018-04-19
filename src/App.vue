@@ -1,18 +1,15 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png">
-    <router-view/> -->
-    <listone></listone>
+    <!-- <img src="./assets/logo.png"> -->
+    <router-view/>
+    <!-- <listone></listone> -->
   </div>
 </template>
 
 <script>
-import listone from './components/listone'
+// import listone from './components/listone'
 export default {
-  name: 'App',
-  components: {
-    listone
-  }
+  name: 'App'
 }
 </script>
 

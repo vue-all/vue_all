@@ -7,8 +7,6 @@
                   <div class="title">
                       {{item.title}} {{item.des}}
                       <span v-if="item.good.length" v-for="(x,index) in item.good" :key="index" :class="itemGoods(index)">{{x}}</span>
-                      <!-- <div class="fblchild"></div> -->
-                      <!-- <div>{{item。tnum}}</div> -->
                   </div>
                   <div class="fontshi fblchild"></div>
               </div>
@@ -19,7 +17,6 @@
 </template>
 
 <script>
-// import ShowTime from './com'
 import dataList from './data'
 import BScroll from 'better-scroll'
 export default {
@@ -81,7 +78,6 @@ export default {
       })
       this.meunScroll.on('scroll', (pos) => {
         this.scroll = Math.abs(Math.round(pos.y))
-        console.log(this.scroll)
       })
     }
   }
@@ -94,7 +90,6 @@ export default {
   position:absolute;
   top: 0vw;
   bottom: 0;
-  /* display: flex; */
   overflow: hidden;
 }
 

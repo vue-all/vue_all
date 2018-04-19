@@ -1,15 +1,15 @@
-// import Vue from 'vue'
-// import Router from 'vue-router'
-// import HelloWorld from '@/components/listone'
+import Vue from 'vue'
+import Router from 'vue-router'
+import listone from '@/components/listone'
 
-// Vue.use(Router)
+Vue.use(Router)
 
-// export default new Router({
-//   routes: [
-//     {
-//       path: '/',
-//       name: 'HelloWorld',
-//       component: HelloWorld
-//     }
-//   ]
-// })
+export default new Router({
+  routes: [
+    {
+      path: '/index',
+      name: 'HelloWorld',
+      component: listone
+    }
+  ]
+})
