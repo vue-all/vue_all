@@ -1,8 +1,9 @@
-function ShowTime (tuanid, timeDistance) {
+function ShowTime (tuanid, timeDistance, key) {
   this.tuanid = tuanid
   this.timeDistance = timeDistance * 1000
+  this.stopTime = ''
   this.setTimeShow = function () {
-    var timer = document.getElementsByClassName('fblchild')[this.tuanid]
+    var timer = document.getElementsByClassName(key)[this.tuanid]
     var strTime
     var intDay, intHour, intMinute, intSecond
     timeDistance = this.timeDistance
@@ -26,11 +27,6 @@ function ShowTime (tuanid, timeDistance) {
       }
       strTime = intDay + '天' + intHour + '小时' + intMinute + '分钟' + intSecond + '秒'
       timer.innerHTML = strTime
-      console.log(strTime)
-      var self = this
-      setTimeout(function () {
-        self.setTimeShow()
-      }, 1000)
     } else {
       return false
     }

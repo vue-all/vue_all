@@ -1,21 +1,27 @@
 <template>
     <div class='one'>
+      <div class="menuWrapper" ref="menuWrapper">
         <ul>
             <li v-for="(item,index) in dataList" :key="index">
               <div class="conTop">
                   <div class="title">
                       {{item.title}} {{item.des}}
-                      <span v-if="item.good.length" v-for="(x,index) in item.good" :key="index" :class="itemGoods(x)">{{x}}</span>
-                      <div class="fblchild"></div>
+                      <span v-if="item.good.length" v-for="(x,index) in item.good" :key="index" :class="itemGoods(index)">{{x}}</span>
+                      <!-- <div class="fblchild"></div> -->
+                      <!-- <div>{{item。tnum}}</div> -->
                   </div>
+                  <div class="fontshi fblchild"></div>
               </div>
             </li>
         </ul>
+      </div>
     </div>
 </template>
 
 <script>
-import ShowTime from './com'
+// import ShowTime from './com'
+import dataList from './data'
+import BScroll from 'better-scroll'
 export default {
   data () {
     return {
@@ -24,116 +30,97 @@ export default {
     }
   },
   created () {
-    this.dataList = [
-      {
-        title: '新手体验',
-        des: 'yx2012',
-        good: [],
-        qianl: '11.00',
-        houl: '3.00',
-        time: '12',
-        money: '12345.25',
-        status: 0,
-        tnum: 45454545
-      },
-      {
-        title: '余宝宝',
-        des: 'yx2013',
-        good: ['新春红包', '红包返现', '加息券', '抽奖'],
-        qianl: '12.00',
-        houl: '2.00',
-        time: '18',
-        money: '22345.25',
-        status: 1,
-        tnum: 323232323
-      },
-      {
-        title: '余流宝',
-        des: 'yx2014',
-        good: ['新春红包', '红包返现', '抽奖'],
-        qianl: '15.00',
-        houl: '6.00',
-        time: '16',
-        money: '32345.25',
-        status: 2,
-        tnum: 6666666
-      },
-      {
-        title: '余宝宝',
-        des: 'yx2015',
-        good: [],
-        qianl: '21.00',
-        houl: '13.00',
-        time: '10',
-        money: '412345.25',
-        status: 3,
-        tnum: 11111111
-      },
-      {
-        title: '余流宝',
-        des: 'yx2016',
-        good: [],
-        qianl: '31.00',
-        houl: '31.00',
-        time: '21',
-        money: '92345.25',
-        status: 4,
-        tnum: 888888888
-      }
-    ]
+    this.dataList = dataList
   },
   mounted () {
     this.$nextTick(function () {
       for (var i = 0; i < this.dataList.length; i++) {
-        var set = new ShowTime(i, this.dataList[i].tnum)
-        set.setTimeShow()
+        this.setTime(i, this.dataList[i].tnum)
       }
+      this._initScroll()
     })
   },
   methods: {
-    itemGoods (item) {
-      if (item === '新春红包') {
+    itemGoods (key) {
+      if (key === 0) {
         return 's1'
-      } else if (item === '红包返现') {
+      } else if (key === 1) {
         return 's2'
-      } else if (item === '加息券') {
+      } else if (key === 2) {
         return 's3'
-      } else if (item === '抽奖') {
+      } else if (key === 3) {
         return 's4'
       }
+    },
+    setTime (key, num) {
+      var timer = document.getElementsByClassName('fblchild')[key]
+      if (num > 0) {
+        var miaoCount = Math.floor(num / 1000)
+        var tian = Math.floor(miaoCount / 3600 / 24)
+        var shi = Math.floor(Math.floor(miaoCount / 3600) - tian * 24)
+        var fen = Math.floor(miaoCount / 60) - (tian * 24 * 60 + shi * 60)
+        var miao = miaoCount - (tian * 24 * 3600 + shi * 3600 + fen * 60)
+        timer.innerHTML = tian + '天' + shi + '时' + fen + '分' + miao + '秒'
+        num -= 1000
+        setTimeout(() => {
+          this.setTime(key, num)
+        }, 1000)
+      } else {
+        timer.innerHTML = '时间结束'
+      }
+    },
+    _initScroll () {
+      console.log(this.$refs.menuWrapper)
+      this.meunScroll = new BScroll(this.$refs.menuWrapper, {
+        click: true,
+        probeType: 3
+      })
     }
   }
 }
 </script>
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
+.one {
+  width: 100%;
+  position:absolute;
+  top: 0vw;
+  bottom: 0;
+  /* display: flex; */
+  overflow: hidden;
+}
+
+.menuWrapper {
+  width: 100%;
+  height: 100%;
+}
 .one li {
-  width: 1170px;
-  height: 214px;
+  width: 100%;
   background: #ffffff;
-  margin: 35px auto;
+  margin-bottom:5vw
 }
 
 .one li .conTop {
-  width: 1102px;
-  height: 74px;
+  width: 100%;
   margin: 0 auto;
   border-bottom:1px solid #eeeeee;
   font-size: 0;
+  padding-left: 3vw;
+  box-sizing: border-box;
 }
 
 .one li .conTop .title {
   display: inline-block;
   height: 100%;
-  line-height: 74px;
-  font-size: 20px;
+  line-height: 10vw;
+  font-size: 3.2vw;
   color: #323232;
 }
 
 .one li .conTop span {
-  font-size: 12px;
+  font-size: 3.2vw;
   vertical-align: top;
-  line-height:75px;
+  line-height:10vw;
   margin-right:10px;
 }
 
@@ -171,5 +158,11 @@ export default {
   border-radius: 4px;
   border:1px solid #b650c0;
   padding: 2px 10px;
+}
+
+.one li .conTop .fontshi {
+  font-size: 4.2vw;
+  line-height: 10vw;
+  color: #cdad00;
 }
 </style>
