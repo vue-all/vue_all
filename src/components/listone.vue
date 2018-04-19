@@ -2,7 +2,7 @@
     <div class='one'>
       <div class="menuWrapper" ref="menuWrapper">
         <ul>
-            <li v-for="(item,index) in dataList" :key="index">
+            <li v-for="(item,index) in dataList" :key="index" class="food-list-hook" @click="selectMenu(index)">
               <div class="conTop">
                   <div class="title">
                       {{item.title}} {{item.des}}
@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       dataList: [],
-      timeList: []
+      scroll: 0
     }
   },
   created () {
@@ -41,6 +41,11 @@ export default {
     })
   },
   methods: {
+    selectMenu (index) {
+      let foodList = this.$refs.menuWrapper.getElementsByClassName('food-list-hook')
+      let el = foodList[index]
+      this.meunScroll.scrollToElement(el, 300)
+    },
     itemGoods (key) {
       if (key === 0) {
         return 's1'
@@ -70,10 +75,13 @@ export default {
       }
     },
     _initScroll () {
-      console.log(this.$refs.menuWrapper)
       this.meunScroll = new BScroll(this.$refs.menuWrapper, {
         click: true,
         probeType: 3
+      })
+      this.meunScroll.on('scroll', (pos) => {
+        this.scroll = Math.abs(Math.round(pos.y))
+        console.log(this.scroll)
       })
     }
   }
