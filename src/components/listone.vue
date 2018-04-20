@@ -8,7 +8,12 @@
                       {{item.title}} {{item.des}}
                       <span v-if="item.good.length" v-for="(x,index) in item.good" :key="index" :class="itemGoods(index)">{{x}}</span>
                   </div>
-                  <div class="fontshi fblchild"></div>
+                  <div>
+                    <span class="fontshi fblchild"></span>
+                    <div class="cart-warpper">
+                      <CART></CART>
+                    </div>
+                  </div>
               </div>
             </li>
         </ul>
@@ -18,7 +23,9 @@
 
 <script>
 import dataList from './data'
+import CART from './cart'
 import BScroll from 'better-scroll'
+import './style.css'
 export default {
   data () {
     return {
@@ -80,6 +87,9 @@ export default {
         this.scroll = Math.abs(Math.round(pos.y))
       })
     }
+  },
+  components: {
+    CART
   }
 }
 </script>
@@ -110,6 +120,7 @@ export default {
   font-size: 0;
   padding-left: 3vw;
   box-sizing: border-box;
+  position: relative;
 }
 
 .one li .conTop .title {
@@ -163,9 +174,17 @@ export default {
   padding: 2px 10px;
 }
 
-.one li .conTop .fontshi {
+.one li .conTop .fontshi{
   font-size: 4.2vw;
   line-height: 10vw;
   color: #cdad00;
+  display: inline-block
 }
+
+.one li .conTop .cart-warpper {
+  display: inline-block;
+  position:absolute;
+  right: 0;
+}
+
 </style>
