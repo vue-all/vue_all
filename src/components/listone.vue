@@ -1,24 +1,30 @@
 <template>
+  <div>
+    <div class="loading" v-show="scY > 30">请求中，请稍后。。。</div>
     <div class='one'>
-      <div class="menuWrapper" ref="menuWrapper">
-        <ul>
-            <li v-for="(item,index) in dataList" :key="index" class="food-list-hook" @click="selectMenu(index)">
-              <div class="conTop">
-                  <div class="title">
-                      {{item.title}} {{item.des}}
-                      <span v-if="item.good.length" v-for="(x,index) in item.good" :key="index" :class="itemGoods(index)">{{x}}</span>
-                  </div>
-                  <div>
-                    <span class="fontshi fblchild"></span>
-                    <div class="cart-warpper">
-                      <CART></CART>
+        <div class="menuWrapper" ref="menuWrapper">
+          <ul>
+              <li v-for="(item,index) in dataList" :key="index" class="food-list-hook" @click="selectMenu(index)">
+                <div class="conTop">
+                    <div class="title">
+                        {{item.title}} {{item.des}}
+                        <span v-if="item.good.length" v-for="(x,index) in item.good" :key="index" :class="itemGoods(index)">{{x}}</span>
                     </div>
-                  </div>
-              </div>
-            </li>
-        </ul>
+                    <div>
+                      <span class="fontshi fblchild"></span>
+                      <div class="cart-warpper">
+                        <CART></CART>
+                      </div>
+                    </div>
+                </div>
+              </li>
+          </ul>
+        </div>
       </div>
-    </div>
+      <div class="two">
+        <div class="left">11</div>
+      </div>
+  </div>
 </template>
 
 <script>
@@ -30,7 +36,9 @@ export default {
   data () {
     return {
       dataList: [],
-      scroll: 0
+      scroll: 0,
+      flag: true,
+      scY: 0
     }
   },
   created () {
@@ -84,7 +92,16 @@ export default {
         probeType: 3
       })
       this.meunScroll.on('scroll', (pos) => {
+        this.scY = pos.y
         this.scroll = Math.abs(Math.round(pos.y))
+        if (this.scY > 30) {
+          if (this.flag) {
+            console.log('重新请求中')
+            this.flag = false
+          }
+        } else {
+          this.flag = true
+        }
       })
     }
   },
@@ -95,11 +112,23 @@ export default {
 </script>
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
+.loading {
+  width: 100%;
+  height: 10vw;
+  /* border-radius: 50%; */
+  /* background: #ffffff; */
+  position: absolute;
+  top:1vw;
+  text-align: center;
+  /* left: 50%; */
+  /* margin-left: -5vw; */
+  /* z-index: 9; */
+}
 .one {
   width: 100%;
   position:absolute;
   top: 0vw;
-  bottom: 0;
+  bottom: 15vw;
   overflow: hidden;
 }
 
@@ -185,6 +214,13 @@ export default {
   display: inline-block;
   position:absolute;
   right: 0;
+}
+.two {
+  width: 100%;
+  height: 15vw;
+  background: #ccc;
+  position: absolute;
+  bottom: 0;
 }
 
 </style>

@@ -41,7 +41,7 @@ export default {
   .cart .fade-enter-active,.cart  .fade-leave-active {
     transition: all .4s linear;
   }
-  .cart .fade-enter, .cart .fade-leave-active /* .fade-leave-active below version 2.1.8 */ {
+  .cart .fade-enter, .cart .fade-leave-active {
     opacity: 0;
     transform: translate3d(12vw, 0, 0);
   }
@@ -64,15 +64,12 @@ export default {
   .cart .jian {
     left: 0;
     transition: all .6s;
-    /* transform: rotate(45deg); */
   }
-  .cart .fade-enter .jians, .cart .fade-leave-active .jians/* .fade-leave-active below version 2.1.8 */ {
+  .cart .fade-enter .jians, .cart .fade-leave-active .jians {
     opacity: 0;
     transform: rotate(180deg);
   }
-  /* .cart .jians {
-    transform: rotate(180deg);
-  } */
+
   .cart .jia {
     right: 0;
   }
