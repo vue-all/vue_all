@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="loading" v-show="scY > 30">请求中，请稍后。。。</div>
-    <div class='one'>
+    <div class="loading" v-show="tos >= 30">请求中，请稍后。。。</div>
+    <div class='one' :style="{'top': tos + 'px'}">
         <div class="menuWrapper" ref="menuWrapper">
           <ul>
               <li v-for="(item,index) in dataList" :key="index" class="food-list-hook" @click="selectMenu(index)">
@@ -13,7 +13,8 @@
                     <div>
                       <span class="fontshi fblchild"></span>
                       <div class="cart-warpper">
-                        <CART></CART>
+                        <CART :item="item"></CART>
+                        <Tos :item="item"></Tos>
                       </div>
                     </div>
                 </div>
@@ -21,15 +22,13 @@
           </ul>
         </div>
       </div>
-      <div class="two">
-        <div class="left">11</div>
-      </div>
   </div>
 </template>
 
 <script>
 import dataList from './data'
 import CART from './cart'
+import Tos from './tos'
 import BScroll from 'better-scroll'
 import './style.css'
 export default {
@@ -38,7 +37,8 @@ export default {
       dataList: [],
       scroll: 0,
       flag: true,
-      scY: 0
+      scY: 0,
+      tos: 0
     }
   },
   created () {
@@ -49,6 +49,7 @@ export default {
       for (var i = 0; i < this.dataList.length; i++) {
         this.setTime(i, this.dataList[i].tnum)
       }
+      this.tops = '20px'
       this._initScroll()
     })
   },
@@ -94,9 +95,14 @@ export default {
       this.meunScroll.on('scroll', (pos) => {
         this.scY = pos.y
         this.scroll = Math.abs(Math.round(pos.y))
-        if (this.scY > 30) {
+        if (this.scY >= 30) {
           if (this.flag) {
+            this.tos = this.scY
             console.log('重新请求中')
+            setTimeout(() => {
+              this.flag = true
+              this.tos = 0
+            }, 2000)
             this.flag = false
           }
         } else {
@@ -106,7 +112,8 @@ export default {
     }
   },
   components: {
-    CART
+    CART,
+    Tos
   }
 }
 </script>

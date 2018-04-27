@@ -14,6 +14,14 @@
 
 <script>
 export default {
+  props: {
+    item: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
   data () {
     return {
       count: 0
@@ -22,6 +30,7 @@ export default {
   methods: {
     add () {
       this.count++
+      this.item.time = this.count
     },
     jian () {
       this.count--
